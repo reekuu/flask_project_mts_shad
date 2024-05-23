@@ -8,37 +8,41 @@ from datetime import datetime
 import src.preprocessing as preprocessing
 import src.scorer as scorer
 
-ALLOWED_EXTENSIONS = set(['csv'])
+ALLOWED_EXTENSIONS = {'csv'}
+
 
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+
 def create_app():
     app = Flask(__name__)
+    # app.config['DEBUG'] = True
+
+    @app.route('/')
+    def redirect_to_upload():
+        return redirect('/upload', 302)
 
     @app.route('/upload', methods=['GET', 'POST'])
     def upload():
         if request.method == 'POST':
-            
+
             # Import file
             file = request.files['file']
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
-                
+
                 # Store imported file locally
                 new_filename = f'{filename.split(".")[0]}_{str(datetime.now())}.csv'
                 save_location = os.path.join('input', new_filename)
                 file.save(save_location)
-                
+
                 # Get input dataframe
                 input_df = preprocessing.import_data(save_location)
 
-                # Run preprocessing
-                preprocessed_df = preprocessing.run_preproc(input_df)
-
                 # Run scorer to get submission file for competition
-                submission = scorer.make_pred(preprocessed_df, save_location)
+                submission = scorer.make_predict(input_df, save_location)
                 submission.to_csv(save_location.replace('input', 'output'), index=False)
 
                 return redirect(url_for('download'))

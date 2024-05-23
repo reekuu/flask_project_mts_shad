@@ -1,5 +1,5 @@
 {% for filename in files %}
-{% if filename not in ('.DS_Store') %}
+{% if filename not in ('.DS_Store', '.gitkeep') %}
 <a href="{{ url_for('download_file', filename=filename) }}">{{ filename }}</a><br />
 {% endif %}
 {% endfor %}

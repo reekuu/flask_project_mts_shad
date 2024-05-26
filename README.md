@@ -1,4 +1,39 @@
-# ml_ops_2
-Dummy project within ML Ops 2 homework with model inference for MTS Teta Competition
+# Flask проект для МТС ШАД
 
-Service requires file `train.csv` to be located at `./app/train_data/` to work correctly. File should be downloaded from ML competetion [MTS Teta ML 1](https://www.kaggle.com/competitions/teta-mts-ml-1/data).
+![logo-wide](docs/logo-wide.jpeg)
+
+## Краткое описание
+
+Проект посвящен созданию Веб-приложения в Docker-контейнере для использования предварительно обученной модели Машинного обучения.
+Работа включала интеграцию ML-модели с фреймворком Flask, оформление HTML-страниц, и упаковку готового результата в Docker-контейнер.
+
+## Технологический стек
+
+- `Python 3.11`.
+- `Flask 2.3.2` в основе веб-приложения.
+- `CatBoost 1.2.3` в роли ML-модели.
+- `NumPy 1.26.4`, `Pandas 2.2.2` для обработки данных.
+- `Matplotlib 3.7.0`, `Seaborn 0.12.2` для визуализации данных.
+
+## Установка и запуск
+
+1. Клонируйте репозиторий:
+   ```bash
+   git clone https://your-repository-link
+   cd your-repository-name
+   ```
+2. Установите зависимости:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. Запустите веб-сервер:
+   ```bash
+   cd ./app
+   flask run --host=0.0.0.0 --port=3001
+   ```
+
+## Docker-контейнер
+
+## Пример использования
+Для использования перейдите по адресу `http://localhost:3000` после запуска сервера. Веб-интерфейс предоставит форму для загрузки датасета и покажет результаты моделирования.

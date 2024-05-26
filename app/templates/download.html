@@ -1,5 +1,48 @@
-{% for filename in files %}
-{% if filename not in ('.DS_Store', '.gitkeep') %}
-<a href="{{ url_for('download_file', filename=filename) }}">{{ filename }}</a><br />
-{% endif %}
-{% endfor %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Download Files</title>
+    <style>
+        body {
+            font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            background: linear-gradient(to right, #e0e0e0, #ffffff); /* градиент от серого к белому */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+        div {
+            background: #ffffff; /* белый фон для блока со ссылками */
+            padding: 30px; /* внутренний отступ */
+            padding-top: 5px; /* уменьшенный верхний-внутренний отступ */
+            border-radius: 4px; /* скругление углов */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* мягкая тень */
+            width: 450px; /* ширина блока */
+            text-align: left;
+        }
+        a {
+            color: #1976d2; /* синий цвет ссылок */
+            text-decoration: none; /* убрать подчёркивание */
+            margin-bottom: 10px;
+            display: block;
+            transition: color 0.3s;
+        }
+        a:hover {
+            color: #115293; /* темно-синий при наведении */
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>Download Files</h1>
+        {% for filename in files | sort %}
+        {% if filename not in ('.DS_Store', '.gitkeep') %}
+        <a href="{{ url_for('download_file', filename=filename) }}">{{ filename }}</a>
+        {% endif %}
+        {% endfor %}
+    </div>
+</body>
+</html>

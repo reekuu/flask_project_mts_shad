@@ -1,10 +1,11 @@
 import os
-
-from flask import Flask, request, render_template, redirect, url_for, send_from_directory
-from werkzeug.utils import secure_filename
 from datetime import datetime
 
-# Import modelling scripts
+from flask import (Flask, redirect, render_template, request,
+                   send_from_directory, url_for)
+from werkzeug.utils import secure_filename
+
+import src.artifacts as artifacts
 import src.preprocessing as preprocessing
 import src.scorer as scorer
 
@@ -18,7 +19,6 @@ def allowed_file(filename):
 
 def create_app():
     app = Flask(__name__)
-    # app.config['DEBUG'] = True
 
     @app.route('/')
     def redirect_to_upload():
@@ -34,7 +34,7 @@ def create_app():
                 filename = secure_filename(file.filename)
 
                 # Store imported file locally
-                new_filename = f'{filename.split(".")[0]}_{str(datetime.now())}.csv'
+                new_filename = f'{filename.split(".")[0]}_{str(datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))}.csv'
                 save_location = os.path.join('input', new_filename)
                 file.save(save_location)
 
@@ -44,6 +44,16 @@ def create_app():
                 # Run scorer to get submission file for competition
                 submission = scorer.make_predict(input_df, save_location)
                 submission.to_csv(save_location.replace('input', 'output'), index=False)
+
+                # Save Density plot
+                plot_checkbox = request.form.get('plot')
+                if plot_checkbox:
+                    artifacts.output_density_plot(submission['preds'], new_filename)  # noqa
+
+                # Save Feature Importance
+                json_checkbox = request.form.get('json')
+                if json_checkbox:
+                    artifacts.output_feature_importance()
 
                 return redirect(url_for('download'))
 
@@ -56,5 +66,4 @@ def create_app():
     @app.route('/download/<filename>')
     def download_file(filename):
         return send_from_directory('output', filename)
-
     return app

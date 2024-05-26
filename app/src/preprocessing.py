@@ -1,4 +1,8 @@
+import warnings
+
 import pandas as pd
+
+warnings.simplefilter(action='ignore', category=FutureWarning)
 
 # Define columns used in the model
 MODEL_FEATURES = [

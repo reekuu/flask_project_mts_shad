@@ -1,13 +1,12 @@
 import os
 from datetime import datetime
 
-from flask import (Flask, redirect, render_template, request,
-                   send_from_directory, url_for)
-from werkzeug.utils import secure_filename
-
 import src.artifacts as artifacts
 import src.preprocessing as preprocessing
 import src.scorer as scorer
+from flask import (Flask, redirect, render_template, request,
+                   send_from_directory, url_for)
+from werkzeug.utils import secure_filename
 
 ALLOWED_EXTENSIONS = {'csv'}
 

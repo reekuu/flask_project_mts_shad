@@ -4,7 +4,6 @@ import os
 import matplotlib
 import matplotlib.pyplot as plt
 import seaborn as sns
-
 from src.scorer import import_model  # noqa
 
 
